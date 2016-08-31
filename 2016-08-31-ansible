@@ -1,0 +1,1580 @@
+Last login: Wed Aug 31 09:18:24 on ttys000
+kimsy-iMac:~ kimsoyoun$ ssh centos@10.0.4.238
+centos@10.0.4.238's password: 
+Last login: Wed Aug 31 00:21:56 2016 from 10.0.1.199
+[centos@ansible-host ~]$ vi /etc/ansible/hosts
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "checksum": "d2e66421be82632150242561bd04d1000da9541d", "failed": true, "msg": "Destination /etc not writable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-play.retry'.         [Errno 2]
+No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "checksum": "d2e66421be82632150242561bd04d1000da9541d", "failed": true, "msg": "Destination /etc not writable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-play.retry'.         [Errno 2]
+No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and 
+make sure become_method is 'sudo' (default).
+This feature will be removed in a 
+future release. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ cat /etc/motd
+WARNING: Use by ACME Employees ONLY[centos@ansible-host ~]$ ansible-playbook example-play.yml            
+[centos@ansible-host ~]$ cat example-play.yml 
+- hosts: localhost
+  sudo: yes
+  user: centos
+  vars:
+    motd_warning: 'WARNING: Use by ACME Employees ONLY'
+  tasks:
+    - name: setup a MOTD
+      copy: dest=/etc/motd content={{ motd_warning }}
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and 
+make sure become_method is 'sudo' (default).
+This feature will be removed in a 
+future release. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ rm -f /etc/
+Display all 180 possibilities? (y or n)
+[centos@ansible-host ~]$ rm -f /etc/mo
+modprobe.d/     modules-load.d/ motd            
+[centos@ansible-host ~]$ rm -f /etc/mo
+modprobe.d/     modules-load.d/ motd            
+[centos@ansible-host ~]$ rm -f /etc/motd 
+rm: cannot remove `/etc/motd': 허가 거부
+[centos@ansible-host ~]$ sudo rm -f /etc/motd 
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+fatal: [localhost]: FAILED! => {"changed": false, "checksum": "d2e66421be82632150242561bd04d1000da9541d", "failed": true, "msg": "Destination /etc not writable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-play.retry'.         [Errno 2]
+No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [localhost] ***************************************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [setup a MOTD] ************************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ cat example-play.yml 
+- hosts: localhost
+  become: yes
+  user: centos
+  vars:
+    motd_warning: 'WARNING: Use by ACME Employees ONLY'
+  tasks:
+    - name: setup a MOTD
+      copy: dest=/etc/motd content={{ motd_warning }}
+[centos@ansible-host ~]$ vi example-apache.yml
+[centos@ansible-host ~]$ vi /etc/ansible/hosts 
+[centos@ansible-host ~]$ sudo vi /etc/ansible/hosts 
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+fatal: [ansible-target]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh.", "unreachable": true}
+fatal: [ansible-target2]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh.", "unreachable": true}
+ [WARNING]: Could not create retry file 'example-play.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+ansible-target             : ok=0    changed=0    unreachable=1    failed=0   
+ansible-target2            : ok=0    changed=0    unreachable=1    failed=0   
+
+[centos@ansible-host ~]$ ansible all ping
+Usage: ansible <host-pattern> [options]
+
+Options:
+  -a MODULE_ARGS, --args=MODULE_ARGS
+                        module arguments
+  --ask-vault-pass      ask for vault password
+  -B SECONDS, --background=SECONDS
+                        run asynchronously, failing after X seconds
+                        (default=N/A)
+  -C, --check           don't make any changes; instead, try to predict some
+                        of the changes that may occur
+  -D, --diff            when changing (small) files and templates, show the
+                        differences in those files; works great with --check
+  -e EXTRA_VARS, --extra-vars=EXTRA_VARS
+                        set additional variables as key=value or YAML/JSON
+  -f FORKS, --forks=FORKS
+                        specify number of parallel processes to use
+                        (default=5)
+  -h, --help            show this help message and exit
+  -i INVENTORY, --inventory-file=INVENTORY
+                        specify inventory host path
+                        (default=/etc/ansible/hosts) or comma separated host
+                        list.
+  -l SUBSET, --limit=SUBSET
+                        further limit selected hosts to an additional pattern
+  --list-hosts          outputs a list of matching hosts; does not execute
+                        anything else
+  -m MODULE_NAME, --module-name=MODULE_NAME
+                        module name to execute (default=command)
+  -M MODULE_PATH, --module-path=MODULE_PATH
+                        specify path(s) to module library (default=None)
+  --new-vault-password-file=NEW_VAULT_PASSWORD_FILE
+                        new vault password file for rekey
+  -o, --one-line        condense output
+  --output=OUTPUT_FILE  output file name for encrypt or decrypt; use - for
+                        stdout
+  -P POLL_INTERVAL, --poll=POLL_INTERVAL
+                        set the poll interval if using -B (default=15)
+  --syntax-check        perform a syntax check on the playbook, but do not
+                        execute it
+  -t TREE, --tree=TREE  log output to this directory
+  --vault-password-file=VAULT_PASSWORD_FILE
+                        vault password file
+  -v, --verbose         verbose mode (-vvv for more, -vvvv to enable
+                        connection debugging)
+  --version             show program's version number and exit
+
+  Connection Options:
+    control as whom and how to connect to hosts
+
+    -k, --ask-pass      ask for connection password
+    --private-key=PRIVATE_KEY_FILE, --key-file=PRIVATE_KEY_FILE
+                        use this file to authenticate the connection
+    -u REMOTE_USER, --user=REMOTE_USER
+                        connect as this user (default=None)
+    -c CONNECTION, --connection=CONNECTION
+                        connection type to use (default=smart)
+    -T TIMEOUT, --timeout=TIMEOUT
+                        override the connection timeout in seconds
+                        (default=10)
+    --ssh-common-args=SSH_COMMON_ARGS
+                        specify common arguments to pass to sftp/scp/ssh (e.g.
+                        ProxyCommand)
+    --sftp-extra-args=SFTP_EXTRA_ARGS
+                        specify extra arguments to pass to sftp only (e.g. -f,
+                        -l)
+    --scp-extra-args=SCP_EXTRA_ARGS
+                        specify extra arguments to pass to scp only (e.g. -l)
+    --ssh-extra-args=SSH_EXTRA_ARGS
+                        specify extra arguments to pass to ssh only (e.g. -R)
+
+  Privilege Escalation Options:
+    control how and which user you become as on target hosts
+
+    -s, --sudo          run operations with sudo (nopasswd) (deprecated, use
+                        become)
+    -U SUDO_USER, --sudo-user=SUDO_USER
+                        desired sudo user (default=root) (deprecated, use
+                        become)
+    -S, --su            run operations with su (deprecated, use become)
+    -R SU_USER, --su-user=SU_USER
+                        run operations with su as this user (default=root)
+                        (deprecated, use become)
+    -b, --become        run operations with become (does not imply password
+                        prompting)
+    --become-method=BECOME_METHOD
+                        privilege escalation method to use (default=sudo),
+                        valid choices: [ sudo | su | pbrun | pfexec | runas |
+                        doas | dzdo ]
+    --become-user=BECOME_USER
+                        run operations as this user (default=root)
+    --ask-sudo-pass     ask for sudo password (deprecated, use become)
+    --ask-su-pass       ask for su password (deprecated, use become)
+    -K, --ask-become-pass
+                        ask for privilege escalation password
+ERROR! Missing target hosts
+[centos@ansible-host ~]$ ansible all -m ping
+ansible-target | UNREACHABLE! => {
+    "changed": false, 
+    "msg": "Failed to connect to the host via ssh.", 
+    "unreachable": true
+}
+ansible-target2 | UNREACHABLE! => {
+    "changed": false, 
+    "msg": "Failed to connect to the host via ssh.", 
+    "unreachable": true
+}
+10.0.4.239 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+10.0.4.241 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+[centos@ansible-host ~]$ sudo vi /etc/ansible/hosts 
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [ansible-target] **********************************************************
+
+TASK [setup] *******************************************************************
+fatal: [ansible-target]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh.", "unreachable": true}
+ [WARNING]: Could not create retry file 'example-play.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+ansible-target             : ok=0    changed=0    unreachable=1    failed=0   
+
+[centos@ansible-host ~]$ sudo vi /etc/ansible/hosts 
+[centos@ansible-host ~]$ ansible all -m ping
+10.0.4.239 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+10.0.4.241 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+[centos@ansible-host ~]$ vi example-play.yml
+[centos@ansible-host ~]$ ansible-playbook example-play.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [setup a MOTD] ************************************************************
+changed: [10.0.4.241]
+changed: [10.0.4.239]
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=1    unreachable=0    failed=0   
+10.0.4.241                 : ok=2    changed=1    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ vi example-apache.yml
+[centos@ansible-host ~]$ packet_write_wait: Connection to 10.0.4.238: Broken pipe
+kimsy-iMac:~ kimsoyoun$ ssh centos@10.0.4.238
+centos@10.0.4.238's password: 
+Last login: Wed Aug 31 00:39:20 2016 from 10.0.1.199
+WARNING: Use by ACME Employees ONLY[centos@ansible-host ~]$ openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem               exit^C
+[centos@ansible-host ~]$ ls
+ansible_hosts  ca-key.pem  ca.pem  example-apache.yml  example-play.yml
+[centos@ansible-host ~]$ vi example-play.yml 
+[centos@ansible-host ~]$ ansible-playbook example-play.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [setup a MOTD] ************************************************************
+changed: [10.0.4.239]
+changed: [10.0.4.241]
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=1    unreachable=0    failed=0   
+10.0.4.241                 : ok=2    changed=1    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ ansible-playbook example-apache.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [yum upgrade all packages] ************************************************
+ok: [10.0.4.241]
+changed: [10.0.4.239]
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=1    unreachable=0    failed=0   
+10.0.4.241                 : ok=2    changed=0    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ cp example-apache.yml example-yum.yml
+[centos@ansible-host ~]$ vi example-yum.yml
+[centos@ansible-host ~]$ ansible-playbook example-yum.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [create rhel-yum.repo file] ***********************************************
+fatal: [10.0.4.239]: FAILED! => {"failed": true, "msg": "the file_name '/home/centos/files/yum/rhel-yum.repo' does not exist, or is not readable"}
+fatal: [10.0.4.241]: FAILED! => {"failed": true, "msg": "the file_name '/home/centos/files/yum/rhel-yum.repo' does not exist, or is not readable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-yum.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=1    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ mkdir files
+[centos@ansible-host ~]$ vi files/rhel-yum.repo
+[centos@ansible-host ~]$ ansible-playbook example-yum.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [create rhel-yum.repo file] ***********************************************
+fatal: [10.0.4.241]: FAILED! => {"failed": true, "msg": "the file_name '/home/centos/files/yum/rhel-yum.repo' does not exist, or is not readable"}
+fatal: [10.0.4.239]: FAILED! => {"failed": true, "msg": "the file_name '/home/centos/files/yum/rhel-yum.repo' does not exist, or is not readable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-yum.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=1    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ cd files
+[centos@ansible-host files]$ ls
+rhel-yum.repo
+[centos@ansible-host files]$ mkdir yum
+[centos@ansible-host files]$ cp rhel-yum.repo yum/rhel-yum.repo
+[centos@ansible-host files]$ rm rhel-yum.repo 
+[centos@ansible-host files]$ ls
+yum
+[centos@ansible-host files]$ cd yum
+[centos@ansible-host yum]$ ls
+rhel-yum.repo
+[centos@ansible-host yum]$ cd
+[centos@ansible-host ~]$ ansible-playbook example-yum.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [create rhel-yum.repo file] ***********************************************
+fatal: [10.0.4.239]: FAILED! => {"changed": false, "checksum": "2237ac350a16f4c124e0de760db464c34f0f037b", "failed": true, "msg": "Destination directory /etc/yum.repo.d does not exist"}
+fatal: [10.0.4.241]: FAILED! => {"changed": false, "checksum": "2237ac350a16f4c124e0de760db464c34f0f037b", "failed": true, "msg": "Destination directory /etc/yum.repo.d does not exist"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-yum.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=1    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-yum.yml
+[centos@ansible-host ~]$ ansible-playbook example-yum.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [find] ********************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [command] *****************************************************************
+fatal: [10.0.4.239]: FAILED! => {"failed": true, "msg": "The conditional check 'result|matched' failed. The error was: template error while templating string: no filter named 'matched'. String: {% if result|matched %} True {% else %} False {% endif %}\n\nThe error appears to have been in '/home/centos/example-yum.yml': line 10, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n    - command: mkdir yum.repo.d\n      ^ here\n"}
+fatal: [10.0.4.241]: FAILED! => {"failed": true, "msg": "The conditional check 'result|matched' failed. The error was: template error while templating string: no filter named 'matched'. String: {% if result|matched %} True {% else %} False {% endif %}\n\nThe error appears to have been in '/home/centos/example-yum.yml': line 10, column 7, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n    - command: mkdir yum.repo.d\n      ^ here\n"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-yum.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=2    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-yum.yml
+[centos@ansible-host ~]$ ansible-playbook example-yum.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [find] ********************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [command] *****************************************************************
+changed: [10.0.4.241]
+ [WARNING]: Consider using file module with state=directory rather than running mkdir
+
+changed: [10.0.4.239]
+
+TASK [create rhel-yum.repo file] ***********************************************
+changed: [10.0.4.239]
+changed: [10.0.4.241]
+
+TASK [add GPG Key] *************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [yum upgrade all packages] ************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=6    changed=2    unreachable=0    failed=0   
+10.0.4.241                 : ok=6    changed=2    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ vi example-yum.yml
+[centos@ansible-host ~]$ ansible-playbook example-yum.yml
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [file] ********************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [create rhel-yum.repo file] ***********************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [add GPG Key] *************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [yum upgrade all packages] ************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=5    changed=0    unreachable=0    failed=0   
+10.0.4.241                 : ok=5    changed=0    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible targets -m setup
+10.0.4.241 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "10.0.4.241"
+        ], 
+        "ansible_all_ipv6_addresses": [
+            "fe80::f816:3eff:fead:63bf"
+        ], 
+        "ansible_architecture": "x86_64", 
+        "ansible_bios_date": "04/01/2014", 
+        "ansible_bios_version": "Ubuntu-1.8.2-1ubuntu1~cloud0", 
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-3.10.0-123.6.3.el7.x86_64", 
+            "LANG": "en_US.UTF-8", 
+            "console": "ttyS0,115200n8", 
+            "crashkernel": "auto", 
+            "ro": true, 
+            "root": "UUID=f855a9a2-087d-40be-a45f-bb8a2a346e0c", 
+            "vconsole.font": "latarcyrheb-sun16", 
+            "vconsole.keymap": "us"
+        }, 
+        "ansible_date_time": {
+            "date": "2016-08-31", 
+            "day": "31", 
+            "epoch": "1472620754", 
+            "hour": "05", 
+            "iso8601": "2016-08-31T05:19:14Z", 
+            "iso8601_basic": "20160831T051914653981", 
+            "iso8601_basic_short": "20160831T051914", 
+            "iso8601_micro": "2016-08-31T05:19:14.654085Z", 
+            "minute": "19", 
+            "month": "08", 
+            "second": "14", 
+            "time": "05:19:14", 
+            "tz": "UTC", 
+            "tz_offset": "+0000", 
+            "weekday": "수요일", 
+            "weekday_number": "3", 
+            "weeknumber": "35", 
+            "year": "2016"
+        }, 
+        "ansible_default_ipv4": {
+            "address": "10.0.4.241", 
+            "alias": "eth0", 
+            "broadcast": "10.0.255.255", 
+            "gateway": "10.0.0.1", 
+            "interface": "eth0", 
+            "macaddress": "fa:16:3e:ad:63:bf", 
+            "mtu": 1450, 
+            "netmask": "255.255.0.0", 
+            "network": "10.0.0.0", 
+            "type": "ether"
+        }, 
+        "ansible_default_ipv6": {}, 
+        "ansible_devices": {
+            "vda": {
+                "holders": [], 
+                "host": "", 
+                "model": null, 
+                "partitions": {
+                    "vda1": {
+                        "sectors": "41927602", 
+                        "sectorsize": 512, 
+                        "size": "19.99 GB", 
+                        "start": "2048"
+                    }
+                }, 
+                "removable": "0", 
+                "rotational": "1", 
+                "sas_address": null, 
+                "sas_device_handle": null, 
+                "scheduler_mode": "deadline", 
+                "sectors": "41943040", 
+                "sectorsize": "512", 
+                "size": "20.00 GB", 
+                "support_discard": "0", 
+                "vendor": "0x1af4"
+            }
+        }, 
+        "ansible_distribution": "CentOS", 
+        "ansible_distribution_major_version": "7", 
+        "ansible_distribution_release": "Core", 
+        "ansible_distribution_version": "7.2.1511", 
+        "ansible_dns": {
+            "nameservers": [
+                "10.0.0.1"
+            ], 
+            "search": [
+                "openstacklocal"
+            ]
+        }, 
+        "ansible_domain": "", 
+        "ansible_env": {
+            "HOME": "/home/centos", 
+            "LANG": "ko_KR.UTF-8", 
+            "LC_ALL": "ko_KR.UTF-8", 
+            "LC_MESSAGES": "ko_KR.UTF-8", 
+            "LESSOPEN": "||/usr/bin/lesspipe.sh %s", 
+            "LOGNAME": "centos", 
+            "MAIL": "/var/mail/centos", 
+            "PATH": "/usr/local/bin:/usr/bin", 
+            "PWD": "/home/centos", 
+            "SELINUX_LEVEL_REQUESTED": "", 
+            "SELINUX_ROLE_REQUESTED": "", 
+            "SELINUX_USE_CURRENT_RANGE": "", 
+            "SHELL": "/bin/bash", 
+            "SHLVL": "2", 
+            "SSH_CLIENT": "10.0.4.238 48475 22", 
+            "SSH_CONNECTION": "10.0.4.238 48475 10.0.4.241 22", 
+            "SSH_TTY": "/dev/pts/0", 
+            "TERM": "xterm-256color", 
+            "USER": "centos", 
+            "XDG_RUNTIME_DIR": "/run/user/1000", 
+            "XDG_SESSION_ID": "205", 
+            "_": "/usr/bin/python"
+        }, 
+        "ansible_eth0": {
+            "active": true, 
+            "device": "eth0", 
+            "ipv4": {
+                "address": "10.0.4.241", 
+                "broadcast": "10.0.255.255", 
+                "netmask": "255.255.0.0", 
+                "network": "10.0.0.0"
+            }, 
+            "ipv6": [
+                {
+                    "address": "fe80::f816:3eff:fead:63bf", 
+                    "prefix": "64", 
+                    "scope": "link"
+                }
+            ], 
+            "macaddress": "fa:16:3e:ad:63:bf", 
+            "module": "virtio_net", 
+            "mtu": 1450, 
+            "pciid": "virtio0", 
+            "promisc": false, 
+            "type": "ether"
+        }, 
+        "ansible_fips": false, 
+        "ansible_form_factor": "Other", 
+        "ansible_fqdn": "ansible-target2", 
+        "ansible_gather_subset": [
+            "hardware", 
+            "network", 
+            "virtual"
+        ], 
+        "ansible_hostname": "ansible-target2", 
+        "ansible_interfaces": [
+            "lo", 
+            "eth0"
+        ], 
+        "ansible_kernel": "3.10.0-123.6.3.el7.x86_64", 
+        "ansible_lo": {
+            "active": true, 
+            "device": "lo", 
+            "ipv4": {
+                "address": "127.0.0.1", 
+                "broadcast": "host", 
+                "netmask": "255.0.0.0", 
+                "network": "127.0.0.0"
+            }, 
+            "ipv6": [
+                {
+                    "address": "::1", 
+                    "prefix": "128", 
+                    "scope": "host"
+                }
+            ], 
+            "mtu": 65536, 
+            "promisc": false, 
+            "type": "loopback"
+        }, 
+        "ansible_machine": "x86_64", 
+        "ansible_machine_id": "464814b61cfcf330e1cdd3ed2d316b8b", 
+        "ansible_memfree_mb": 639, 
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 1638, 
+                "used": 203
+            }, 
+            "real": {
+                "free": 639, 
+                "total": 1841, 
+                "used": 1202
+            }, 
+            "swap": {
+                "cached": 0, 
+                "free": 0, 
+                "total": 0, 
+                "used": 0
+            }
+        }, 
+        "ansible_memtotal_mb": 1841, 
+        "ansible_mounts": [
+            {
+                "device": "/dev/vda1", 
+                "fstype": "xfs", 
+                "mount": "/", 
+                "options": "rw,seclabel,relatime,attr2,inode64,noquota", 
+                "size_available": 20116398080, 
+                "size_total": 21456445440, 
+                "uuid": "f855a9a2-087d-40be-a45f-bb8a2a346e0c"
+            }
+        ], 
+        "ansible_nodename": "ansible-target2", 
+        "ansible_os_family": "RedHat", 
+        "ansible_pkg_mgr": "yum", 
+        "ansible_processor": [
+            "GenuineIntel", 
+            "Intel Xeon E312xx (Sandy Bridge)"
+        ], 
+        "ansible_processor_cores": 1, 
+        "ansible_processor_count": 1, 
+        "ansible_processor_threads_per_core": 1, 
+        "ansible_processor_vcpus": 1, 
+        "ansible_product_name": "OpenStack Nova", 
+        "ansible_product_serial": "NA", 
+        "ansible_product_uuid": "NA", 
+        "ansible_product_version": "12.0.1", 
+        "ansible_python": {
+            "executable": "/usr/bin/python", 
+            "has_sslcontext": true, 
+            "type": "CPython", 
+            "version": {
+                "major": 2, 
+                "micro": 5, 
+                "minor": 7, 
+                "releaselevel": "final", 
+                "serial": 0
+            }, 
+            "version_info": [
+                2, 
+                7, 
+                5, 
+                "final", 
+                0
+            ]
+        }, 
+        "ansible_python_version": "2.7.5", 
+        "ansible_selinux": {
+            "config_mode": "enforcing", 
+            "mode": "enforcing", 
+            "policyvers": 28, 
+            "status": "enabled", 
+            "type": "targeted"
+        }, 
+        "ansible_service_mgr": "systemd", 
+        "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHLZ5I0LOiU7/p16TdaURlyk1IfKUItzsOz60QZH+hYjOPdiz1Bp0tc9RBQnWGf0p5MYzCHr8lIXdtGIULV2t8o=", 
+        "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAICJKdm9AF1Q6n3U/XclrmX3MjxAO8k8Aqh7C9BeCDwzj", 
+        "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQC2o9WAZ5ywlJQ8+xn2ENcVOZKuDE+iRgvMzIqsHeC+rFX1mvw3QWOy4p5h6Gn1sVT87BETQcTqX3xn1pYVKmJFnXvdF3Zh9eB+Qou5Y+ETCJCtxukBrwnKJ/Bl/6EHRPFisybco+KKd5QQJFKpnt9eHUl10w9dyZEtnEsR/0zh96CfLhRE3GRkEp6Jixy0HBbOP7fMivAoLOz9Bt+6fB1Zk29cvrnFTkyS4vVd5b3OqhkYEg8aH+hlmjrBKJ4fZx9lf75KY+YmO6tBDeQQjqbbxImemS4ckDCzlCyWUG8VQyIDdT7PTSKAs65YlKD9UlEcKfy76vbuQxkh/plvTw8p", 
+        "ansible_swapfree_mb": 0, 
+        "ansible_swaptotal_mb": 0, 
+        "ansible_system": "Linux", 
+        "ansible_system_capabilities": [
+            ""
+        ], 
+        "ansible_system_capabilities_enforced": "True", 
+        "ansible_system_vendor": "OpenStack Foundation", 
+        "ansible_uptime_seconds": 680827, 
+        "ansible_user_dir": "/home/centos", 
+        "ansible_user_gecos": "Cloud User", 
+        "ansible_user_gid": 1000, 
+        "ansible_user_id": "centos", 
+        "ansible_user_shell": "/bin/bash", 
+        "ansible_user_uid": 1000, 
+        "ansible_userspace_architecture": "x86_64", 
+        "ansible_userspace_bits": "64", 
+        "ansible_virtualization_role": "host", 
+        "ansible_virtualization_type": "kvm", 
+        "module_setup": true
+    }, 
+    "changed": false
+}
+10.0.4.239 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "10.0.4.239"
+        ], 
+        "ansible_all_ipv6_addresses": [
+            "fe80::f816:3eff:febe:a08f"
+        ], 
+        "ansible_architecture": "x86_64", 
+        "ansible_bios_date": "04/01/2014", 
+        "ansible_bios_version": "Ubuntu-1.8.2-1ubuntu1~cloud0", 
+        "ansible_cmdline": {
+            "BOOT_IMAGE": "/boot/vmlinuz-3.10.0-123.6.3.el7.x86_64", 
+            "LANG": "en_US.UTF-8", 
+            "console": "ttyS0,115200n8", 
+            "crashkernel": "auto", 
+            "ro": true, 
+            "root": "UUID=f855a9a2-087d-40be-a45f-bb8a2a346e0c", 
+            "vconsole.font": "latarcyrheb-sun16", 
+            "vconsole.keymap": "us"
+        }, 
+        "ansible_date_time": {
+            "date": "2016-08-31", 
+            "day": "31", 
+            "epoch": "1472620754", 
+            "hour": "05", 
+            "iso8601": "2016-08-31T05:19:14Z", 
+            "iso8601_basic": "20160831T051914697857", 
+            "iso8601_basic_short": "20160831T051914", 
+            "iso8601_micro": "2016-08-31T05:19:14.698016Z", 
+            "minute": "19", 
+            "month": "08", 
+            "second": "14", 
+            "time": "05:19:14", 
+            "tz": "UTC", 
+            "tz_offset": "+0000", 
+            "weekday": "수요일", 
+            "weekday_number": "3", 
+            "weeknumber": "35", 
+            "year": "2016"
+        }, 
+        "ansible_default_ipv4": {
+            "address": "10.0.4.239", 
+            "alias": "eth0", 
+            "broadcast": "10.0.255.255", 
+            "gateway": "10.0.0.1", 
+            "interface": "eth0", 
+            "macaddress": "fa:16:3e:be:a0:8f", 
+            "mtu": 1450, 
+            "netmask": "255.255.0.0", 
+            "network": "10.0.0.0", 
+            "type": "ether"
+        }, 
+        "ansible_default_ipv6": {}, 
+        "ansible_devices": {
+            "vda": {
+                "holders": [], 
+                "host": "", 
+                "model": null, 
+                "partitions": {
+                    "vda1": {
+                        "sectors": "41927602", 
+                        "sectorsize": 512, 
+                        "size": "19.99 GB", 
+                        "start": "2048"
+                    }
+                }, 
+                "removable": "0", 
+                "rotational": "1", 
+                "sas_address": null, 
+                "sas_device_handle": null, 
+                "scheduler_mode": "deadline", 
+                "sectors": "41943040", 
+                "sectorsize": "512", 
+                "size": "20.00 GB", 
+                "support_discard": "0", 
+                "vendor": "0x1af4"
+            }
+        }, 
+        "ansible_distribution": "CentOS", 
+        "ansible_distribution_major_version": "7", 
+        "ansible_distribution_release": "Core", 
+        "ansible_distribution_version": "7.2.1511", 
+        "ansible_dns": {
+            "nameservers": [
+                "10.0.0.1"
+            ], 
+            "search": [
+                "openstacklocal", 
+                "novalocal"
+            ]
+        }, 
+        "ansible_domain": "novalocal", 
+        "ansible_env": {
+            "HOME": "/home/centos", 
+            "LANG": "ko_KR.UTF-8", 
+            "LC_ALL": "ko_KR.UTF-8", 
+            "LC_MESSAGES": "ko_KR.UTF-8", 
+            "LESSOPEN": "||/usr/bin/lesspipe.sh %s", 
+            "LOGNAME": "centos", 
+            "MAIL": "/var/mail/centos", 
+            "PATH": "/usr/local/bin:/usr/bin", 
+            "PWD": "/home/centos", 
+            "SELINUX_LEVEL_REQUESTED": "", 
+            "SELINUX_ROLE_REQUESTED": "", 
+            "SELINUX_USE_CURRENT_RANGE": "", 
+            "SHELL": "/bin/bash", 
+            "SHLVL": "2", 
+            "SSH_CLIENT": "10.0.4.238 52797 22", 
+            "SSH_CONNECTION": "10.0.4.238 52797 10.0.4.239 22", 
+            "SSH_TTY": "/dev/pts/1", 
+            "TERM": "xterm-256color", 
+            "USER": "centos", 
+            "XDG_RUNTIME_DIR": "/run/user/1000", 
+            "XDG_SESSION_ID": "209", 
+            "_": "/usr/bin/python"
+        }, 
+        "ansible_eth0": {
+            "active": true, 
+            "device": "eth0", 
+            "ipv4": {
+                "address": "10.0.4.239", 
+                "broadcast": "10.0.255.255", 
+                "netmask": "255.255.0.0", 
+                "network": "10.0.0.0"
+            }, 
+            "ipv6": [
+                {
+                    "address": "fe80::f816:3eff:febe:a08f", 
+                    "prefix": "64", 
+                    "scope": "link"
+                }
+            ], 
+            "macaddress": "fa:16:3e:be:a0:8f", 
+            "module": "virtio_net", 
+            "mtu": 1450, 
+            "pciid": "virtio0", 
+            "promisc": false, 
+            "type": "ether"
+        }, 
+        "ansible_fips": false, 
+        "ansible_form_factor": "Other", 
+        "ansible_fqdn": "ansible-target.novalocal", 
+        "ansible_gather_subset": [
+            "hardware", 
+            "network", 
+            "virtual"
+        ], 
+        "ansible_hostname": "ansible-target", 
+        "ansible_interfaces": [
+            "lo", 
+            "eth0"
+        ], 
+        "ansible_kernel": "3.10.0-123.6.3.el7.x86_64", 
+        "ansible_lo": {
+            "active": true, 
+            "device": "lo", 
+            "ipv4": {
+                "address": "127.0.0.1", 
+                "broadcast": "host", 
+                "netmask": "255.0.0.0", 
+                "network": "127.0.0.0"
+            }, 
+            "ipv6": [
+                {
+                    "address": "::1", 
+                    "prefix": "128", 
+                    "scope": "host"
+                }
+            ], 
+            "mtu": 65536, 
+            "promisc": false, 
+            "type": "loopback"
+        }, 
+        "ansible_machine": "x86_64", 
+        "ansible_machine_id": "464814b61cfcf330e1cdd3ed2d316b8b", 
+        "ansible_memfree_mb": 578, 
+        "ansible_memory_mb": {
+            "nocache": {
+                "free": 1633, 
+                "used": 208
+            }, 
+            "real": {
+                "free": 578, 
+                "total": 1841, 
+                "used": 1263
+            }, 
+            "swap": {
+                "cached": 0, 
+                "free": 0, 
+                "total": 0, 
+                "used": 0
+            }
+        }, 
+        "ansible_memtotal_mb": 1841, 
+        "ansible_mounts": [
+            {
+                "device": "/dev/vda1", 
+                "fstype": "xfs", 
+                "mount": "/", 
+                "options": "rw,seclabel,relatime,attr2,inode64,noquota", 
+                "size_available": 20037316608, 
+                "size_total": 21456445440, 
+                "uuid": "f855a9a2-087d-40be-a45f-bb8a2a346e0c"
+            }
+        ], 
+        "ansible_nodename": "ansible-target.novalocal", 
+        "ansible_os_family": "RedHat", 
+        "ansible_pkg_mgr": "yum", 
+        "ansible_processor": [
+            "GenuineIntel", 
+            "Intel Xeon E312xx (Sandy Bridge)"
+        ], 
+        "ansible_processor_cores": 1, 
+        "ansible_processor_count": 1, 
+        "ansible_processor_threads_per_core": 1, 
+        "ansible_processor_vcpus": 1, 
+        "ansible_product_name": "OpenStack Nova", 
+        "ansible_product_serial": "NA", 
+        "ansible_product_uuid": "NA", 
+        "ansible_product_version": "12.0.1", 
+        "ansible_python": {
+            "executable": "/usr/bin/python", 
+            "has_sslcontext": true, 
+            "type": "CPython", 
+            "version": {
+                "major": 2, 
+                "micro": 5, 
+                "minor": 7, 
+                "releaselevel": "final", 
+                "serial": 0
+            }, 
+            "version_info": [
+                2, 
+                7, 
+                5, 
+                "final", 
+                0
+            ]
+        }, 
+        "ansible_python_version": "2.7.5", 
+        "ansible_selinux": {
+            "config_mode": "enforcing", 
+            "mode": "enforcing", 
+            "policyvers": 28, 
+            "status": "enabled", 
+            "type": "targeted"
+        }, 
+        "ansible_service_mgr": "systemd", 
+        "ansible_ssh_host_key_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMCWhFh0+OTsZvmcPX9USHXcjRAQQAQklI2OXL9BpGv0LYEGnj+P3+0J8dXNm7UqIz749RXHTVLB6yySJJOTFFE=", 
+        "ansible_ssh_host_key_ed25519_public": "AAAAC3NzaC1lZDI1NTE5AAAAIOyVMlj9NOULcYizWCmCCv+GKUdEJXcie45favdfLxOF", 
+        "ansible_ssh_host_key_rsa_public": "AAAAB3NzaC1yc2EAAAADAQABAAABAQDNOzuTvtjY8c+S9JA4fZRVXsMjiW5eRAg1tQS/IDQJ++tAonhUwfiDCIK+18tqJlEgORJCLEkMeCtV+jxpVHoB+R4Fz0To9rREv0WOHZ491ETIvEA1hCCjmEJaN6Ji/MhaRnl6xl/81U1E4aJazPMPMn2QND+Dj2UiMuzHVln/sYqiZ5WJFYcfRfUBGRo7pcirlcabjE8xR2UAfeObo3NWizxsGVkBu8CqDpxRutUg+2d2IYm8BcvWakgSCKqAUvh+MrLq2m31lFY18k3CCmzOlX6FjgN1mx+xbKaCBuPey9VulvEJApJjBaKdgow5ppFKLXsZ20EKmcRrNvKH2A/F", 
+        "ansible_swapfree_mb": 0, 
+        "ansible_swaptotal_mb": 0, 
+        "ansible_system": "Linux", 
+        "ansible_system_capabilities": [
+            ""
+        ], 
+        "ansible_system_capabilities_enforced": "True", 
+        "ansible_system_vendor": "OpenStack Foundation", 
+        "ansible_uptime_seconds": 681649, 
+        "ansible_user_dir": "/home/centos", 
+        "ansible_user_gecos": "Cloud User", 
+        "ansible_user_gid": 1000, 
+        "ansible_user_id": "centos", 
+        "ansible_user_shell": "/bin/bash", 
+        "ansible_user_uid": 1000, 
+        "ansible_userspace_architecture": "x86_64", 
+        "ansible_userspace_bits": "64", 
+        "ansible_virtualization_role": "host", 
+        "ansible_virtualization_type": "kvm", 
+        "module_setup": true
+    }, 
+    "changed": false
+}
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ cat example-docker.yml 
+---
+- hosts: targets
+  base: yes
+  user: centos
+  vars:
+    libseccomp: libseccomp-2.2.1-1.el7.x86_64.rpm
+    libtool: libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+    docker-engine-selinux: docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm
+    docker-engine: docker-engine-1.12.1-1.el7.centos.x86_64.rpm
+
+  tasks:
+    - name: Docker rpm files transfered
+      file: path={{ ansible_user_dir }}/docker state=directory
+      copy: src=/files/docker/{{ item }} dest={{ ansible_user_dir }}/docker/{{ item }}
+      with_items:
+        - {{ libseccomp }}
+        - {{ libtool }}
+        - {{ docker-engine-selinux }}
+        - {{ docker-engine }}
+
+    - name: install Docker Dependencies
+      yum: name={{ ansible_user_dir }}/docker/{{ item }} state=present
+      with_items:
+        - {{ libseccomp }}
+        - {{ libtool }}
+
+    - name: intall Docker
+      yum: name={{ ansible_user_dir }}/docker/{{item}} state=present
+      with_items:
+        - {{ docker-engine-selinux }}
+        - {{ docker-engine }}
+
+    - name: add sudo authority
+      command: usermod -aG docker $(whoami)
+[centos@ansible-host ~]$ vi ansible_hosts
+[centos@ansible-host ~]$ ls
+ansible_hosts  ca-key.pem  ca.pem  example-apache.yml  example-docker.yml  example-play.yml  example-yum.yml  files
+[centos@ansible-host ~]$ ls-al
+-bash: ls-al: command not found
+[centos@ansible-host ~]$ ls -al
+합계 52
+drwx------. 5 centos centos 4096  8월 31 05:48 .
+drwxr-xr-x. 3 root   root     19  8월 12  2015 ..
+drwx------. 4 centos centos   25  8월 24 00:51 .ansible
+-rw-------. 1 centos centos 1882  8월 31 04:41 .bash_history
+-rw-r--r--. 1 centos centos   18  6월 10  2014 .bash_logout
+-rw-r--r--. 1 centos centos  193  6월 10  2014 .bash_profile
+-rw-r--r--. 1 centos centos  231  6월 10  2014 .bashrc
+-rw-------. 1 centos centos 1024  8월 30 00:52 .rnd
+drwx------. 2 centos centos   46  8월 24 00:53 .ssh
+-rw-r--r--. 1 centos centos  171  8월 31 05:48 ansible_hosts
+-rw-rw-r--. 1 centos centos 3326  8월 30 00:52 ca-key.pem
+-rw-rw-r--. 1 centos centos 2110  8월 30 00:57 ca.pem
+-rw-rw-r--. 1 centos centos  127  8월 31 02:29 example-apache.yml
+-rw-rw-r--. 1 centos centos 1076  8월 31 05:46 example-docker.yml
+-rw-rw-r--. 1 centos centos  203  8월 31 04:06 example-play.yml
+-rw-rw-r--. 1 centos centos  415  8월 31 04:58 example-yum.yml
+drwxrwxr-x. 3 centos centos   16  8월 31 04:27 files
+[centos@ansible-host ~]$ cd files
+[centos@ansible-host files]$ ls
+yum
+[centos@ansible-host files]$ mkdir docker
+[centos@ansible-host files]$ ls
+docker  yum
+[centos@ansible-host files]$ cd
+[centos@ansible-host ~]$ ls
+ansible_hosts                                         example-docker.yml
+ca-key.pem                                            example-play.yml
+ca.pem                                                example-yum.yml
+docker-engine-1.12.0-1.el7.centos.x86_64.rpm          files
+docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm  libseccomp-2.2.1-1.el7.x86_64.rpm
+example-apache.yml                                    libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+[centos@ansible-host ~]$ cp docker-engine-1.12.0-1.el7.centos.x86_64.rpm files/docker/
+[centos@ansible-host ~]$ ls /files/docker
+ls: cannot access /files/docker: 그런 파일이나 디렉터리가 없습니다
+[centos@ansible-host ~]$ ls /files/docker/
+ls: cannot access /files/docker/: 그런 파일이나 디렉터리가 없습니다
+[centos@ansible-host ~]$ ls files/docker/
+docker-engine-1.12.0-1.el7.centos.x86_64.rpm
+[centos@ansible-host ~]$ cp docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm files/docker
+[centos@ansible-host ~]$ cp libseccomp-2.2.1-1.el7.x86_64.rpm files/docker
+[centos@ansible-host ~]$ cp libtool-ltdl-2.4.2-20.el7.x86_64.rpm files/docker
+[centos@ansible-host ~]$ ls files/docker
+docker-engine-1.12.0-1.el7.centos.x86_64.rpm          libseccomp-2.2.1-1.el7.x86_64.rpm
+docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm  libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+[centos@ansible-host ~]$ rm docker-engine-1.12.0-1.el7.centos.x86_64.rpm 
+[centos@ansible-host ~]$ rm docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm 
+[centos@ansible-host ~]$ rm libseccomp-2.2.1-1.el7.x86_64.rpm 
+[centos@ansible-host ~]$ rm libtool-ltdl-2.4.2-20.el7.x86_64.rpm 
+[centos@ansible-host ~]$ ls -al
+합계 52
+drwx------. 5 centos centos 4096  8월 31 05:51 .
+drwxr-xr-x. 3 root   root     19  8월 12  2015 ..
+drwx------. 4 centos centos   25  8월 24 00:51 .ansible
+-rw-------. 1 centos centos 1882  8월 31 04:41 .bash_history
+-rw-r--r--. 1 centos centos   18  6월 10  2014 .bash_logout
+-rw-r--r--. 1 centos centos  193  6월 10  2014 .bash_profile
+-rw-r--r--. 1 centos centos  231  6월 10  2014 .bashrc
+-rw-------. 1 centos centos 1024  8월 30 00:52 .rnd
+drwx------. 2 centos centos   46  8월 24 00:53 .ssh
+-rw-r--r--. 1 centos centos  171  8월 31 05:48 ansible_hosts
+-rw-rw-r--. 1 centos centos 3326  8월 30 00:52 ca-key.pem
+-rw-rw-r--. 1 centos centos 2110  8월 30 00:57 ca.pem
+-rw-rw-r--. 1 centos centos  127  8월 31 02:29 example-apache.yml
+-rw-rw-r--. 1 centos centos 1076  8월 31 05:46 example-docker.yml
+-rw-rw-r--. 1 centos centos  203  8월 31 04:06 example-play.yml
+-rw-rw-r--. 1 centos centos  415  8월 31 04:58 example-yum.yml
+drwxrwxr-x. 4 centos centos   29  8월 31 05:48 files
+[centos@ansible-host ~]$ ls
+ansible_hosts  ca-key.pem  ca.pem  example-apache.yml  example-docker.yml  example-play.yml  example-yum.yml  files
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+ERROR! Syntax Error while loading YAML.
+
+
+The error appears to have been in '/home/centos/example-docker.yml': line 16, column 12, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+      with_items:
+        - {{ libseccomp }}
+           ^ here
+We could be wrong, but this one looks like it might be an issue with
+missing quotes.  Always quote template expression brackets when they
+start a value. For instance:
+
+    with_items:
+      - {{ foo }}
+
+Should be written as:
+
+    with_items:
+      - "{{ foo }}"
+
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+ERROR! 'base' is not a valid attribute for a Play
+
+The error appears to have been in '/home/centos/example-docker.yml': line 2, column 3, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+---
+- hosts: targets
+  ^ here
+
+[centos@ansible-host ~]$ cat example-
+example-apache.yml  example-docker.yml  example-play.yml    example-yum.yml     
+[centos@ansible-host ~]$ cat example-play.yml 
+- hosts: targets
+  become: yes
+  user: centos
+  vars:
+    motd_warning: 'Selim TSG Tech Lab - Ansible Test Host\n'
+  tasks:
+    - name: setup a MOTD
+      copy: dest=/etc/motd content={{ motd_warning }}
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+ERROR! Invalid variable name in vars specified for Play: 'docker-engine' is not a valid variable name
+
+The error appears to have been in '/home/centos/example-docker.yml': line 6, column 5, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  vars:
+    libseccomp: libseccomp-2.2.1-1.el7.x86_64.rpm
+    ^ here
+
+[centos@ansible-host ~]$ cat example-docker.yml
+---
+- hosts: targets
+  become: yes
+  user: centos
+  vars:
+    libseccomp: libseccomp-2.2.1-1.el7.x86_64.rpm
+    libtool: libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+    docker-engine-selinux: docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm
+    docker-engine: docker-engine-1.12.1-1.el7.centos.x86_64.rpm
+
+  tasks:
+    - name: Docker rpm files transfered
+      file: path={{ ansible_user_dir }}/docker state=directory
+      copy: src=/files/docker/{{ item }} dest={{ ansible_user_dir }}/docker/{{ item }}
+      with_items:
+        - "{{ libseccomp }}"
+        - "{{ libtool }}"
+        - "{{ docker-engine-selinux }}"
+        - "{{ docker-engine }}"
+
+    - name: install Docker Dependencies
+      yum: name={{ ansible_user_dir }}/docker/{{ item }} state=present
+      with_items:
+        - "{{ libseccomp }}"
+        - "{{ libtool }}"
+
+    - name: intall Docker
+      yum: name={{ ansible_user_dir }}/docker/{{item}} state=present
+      with_items:
+        - "{{ docker-engine-selinux }}"
+        - "{{ docker-engine }}"
+
+    - name: add sudo authority
+      command: usermod -aG docker $(whoami)
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+ERROR! conflicting action statements
+
+The error appears to have been in '/home/centos/example-docker.yml': line 12, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Docker rpm files transfered
+      ^ here
+
+
+The error appears to have been in '/home/centos/example-docker.yml': line 12, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Docker rpm files transfered
+      ^ here
+
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [file] ********************************************************************
+changed: [10.0.4.239]
+changed: [10.0.4.241]
+
+TASK [Docker rpm files transfered] *********************************************
+fatal: [10.0.4.241]: FAILED! => {"failed": true, "msg": "the file_name '/files/docker/libseccomp-2.2.1-1.el7.x86_64.rpm' does not exist, or is not readable"}
+fatal: [10.0.4.239]: FAILED! => {"failed": true, "msg": "the file_name '/files/docker/libseccomp-2.2.1-1.el7.x86_64.rpm' does not exist, or is not readable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-docker.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=1    unreachable=0    failed=1   
+10.0.4.241                 : ok=2    changed=1    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ ls files/docker
+docker-engine-1.12.0-1.el7.centos.x86_64.rpm          libseccomp-2.2.1-1.el7.x86_64.rpm
+docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm  libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+[centos@ansible-host ~]$ ls -al files/docker
+합계 19568
+drwxrwxr-x. 2 centos centos     4096  8월 31 05:51 .
+drwxrwxr-x. 4 centos centos       29  8월 31 05:48 ..
+-rw-rw-r--. 1 centos centos 19891396  8월 31 05:50 docker-engine-1.12.0-1.el7.centos.x86_64.rpm
+-rw-rw-r--. 1 centos centos    28860  8월 31 05:50 docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm
+-rw-rw-r--. 1 centos centos    50572  8월 31 05:51 libseccomp-2.2.1-1.el7.x86_64.rpm
+-rw-rw-r--. 1 centos centos    49852  8월 31 05:51 libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [file] ********************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [Docker rpm files transfered] *********************************************
+fatal: [10.0.4.241]: FAILED! => {"failed": true, "msg": "the file_name '/files/docker/libseccomp-2.2.1-1.el7.x86_64.rpm' does not exist, or is not readable"}
+fatal: [10.0.4.239]: FAILED! => {"failed": true, "msg": "the file_name '/files/docker/libseccomp-2.2.1-1.el7.x86_64.rpm' does not exist, or is not readable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-docker.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=2    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [file] ********************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [Docker rpm files transfered] *********************************************
+changed: [10.0.4.241] => (item=libseccomp-2.2.1-1.el7.x86_64.rpm)
+changed: [10.0.4.239] => (item=libseccomp-2.2.1-1.el7.x86_64.rpm)
+changed: [10.0.4.241] => (item=libtool-ltdl-2.4.2-20.el7.x86_64.rpm)
+changed: [10.0.4.239] => (item=libtool-ltdl-2.4.2-20.el7.x86_64.rpm)
+changed: [10.0.4.241] => (item=docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm)
+fatal: [10.0.4.241]: FAILED! => {"failed": true, "msg": "the file_name '/home/centos/files/docker/docker-engine-1.12.1-1.el7.centos.x86_64.rpm' does not exist, or is not readable"}
+changed: [10.0.4.239] => (item=docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm)
+fatal: [10.0.4.239]: FAILED! => {"failed": true, "msg": "the file_name '/home/centos/files/docker/docker-engine-1.12.1-1.el7.centos.x86_64.rpm' does not exist, or is not readable"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-docker.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=2    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=2    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ ls files/docker
+docker-engine-1.12.0-1.el7.centos.x86_64.rpm          libseccomp-2.2.1-1.el7.x86_64.rpm
+docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm  libtool-ltdl-2.4.2-20.el7.x86_64.rpm
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [file] ********************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [Docker rpm files transfered] *********************************************
+ok: [10.0.4.239] => (item=libseccomp-2.2.1-1.el7.x86_64.rpm)
+ok: [10.0.4.241] => (item=libseccomp-2.2.1-1.el7.x86_64.rpm)
+ok: [10.0.4.241] => (item=libtool-ltdl-2.4.2-20.el7.x86_64.rpm)
+ok: [10.0.4.239] => (item=libtool-ltdl-2.4.2-20.el7.x86_64.rpm)
+ok: [10.0.4.241] => (item=docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm)
+ok: [10.0.4.239] => (item=docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm)
+changed: [10.0.4.239] => (item=docker-engine-1.12.0-1.el7.centos.x86_64.rpm)
+changed: [10.0.4.241] => (item=docker-engine-1.12.0-1.el7.centos.x86_64.rpm)
+
+TASK [install Docker Dependencies] *********************************************
+changed: [10.0.4.239] => (item=[u'/root/docker/libseccomp-2.2.1-1.el7.x86_64.rpm', u'/root/docker/libtool-ltdl-2.4.2-20.el7.x86_64.rpm'])
+changed: [10.0.4.241] => (item=[u'/root/docker/libseccomp-2.2.1-1.el7.x86_64.rpm', u'/root/docker/libtool-ltdl-2.4.2-20.el7.x86_64.rpm'])
+
+TASK [intall Docker] ***********************************************************
+changed: [10.0.4.239] => (item=[u'/root/docker/docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm', u'/root/docker/docker-engine-1.12.0-1.el7.centos.x86_64.rpm'])
+changed: [10.0.4.241] => (item=[u'/root/docker/docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm', u'/root/docker/docker-engine-1.12.0-1.el7.centos.x86_64.rpm'])
+
+TASK [add sudo authority] ******************************************************
+fatal: [10.0.4.241]: FAILED! => {"changed": true, "cmd": ["usermod", "-aG", "docker", "$(whoami)"], "delta": "0:00:00.004283", "end": "2016-08-31 06:05:19.519534", "failed": true, "rc": 6, "start": "2016-08-31 06:05:19.515251", "stderr": "usermod: '$(whoami)' 사용자가 없습니다", "stdout": "", "stdout_lines": [], "warnings": []}
+fatal: [10.0.4.239]: FAILED! => {"changed": true, "cmd": ["usermod", "-aG", "docker", "$(whoami)"], "delta": "0:00:00.004112", "end": "2016-08-31 06:05:19.542061", "failed": true, "rc": 6, "start": "2016-08-31 06:05:19.537949", "stderr": "usermod: '$(whoami)' 사용자가 없습니다", "stdout": "", "stdout_lines": [], "warnings": []}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-docker.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=5    changed=3    unreachable=0    failed=1   
+10.0.4.241                 : ok=5    changed=3    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-docker.yml
+[centos@ansible-host ~]$ ansible-playbook example-docker.yml 
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [file] ********************************************************************
+ok: [10.0.4.239]
+ok: [10.0.4.241]
+
+TASK [Docker rpm files transfered] *********************************************
+ok: [10.0.4.241] => (item=libseccomp-2.2.1-1.el7.x86_64.rpm)
+ok: [10.0.4.239] => (item=libseccomp-2.2.1-1.el7.x86_64.rpm)
+ok: [10.0.4.241] => (item=libtool-ltdl-2.4.2-20.el7.x86_64.rpm)
+ok: [10.0.4.239] => (item=libtool-ltdl-2.4.2-20.el7.x86_64.rpm)
+ok: [10.0.4.241] => (item=docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm)
+ok: [10.0.4.239] => (item=docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm)
+ok: [10.0.4.241] => (item=docker-engine-1.12.0-1.el7.centos.x86_64.rpm)
+ok: [10.0.4.239] => (item=docker-engine-1.12.0-1.el7.centos.x86_64.rpm)
+
+TASK [install Docker Dependencies] *********************************************
+ok: [10.0.4.241] => (item=[u'/root/docker/libseccomp-2.2.1-1.el7.x86_64.rpm', u'/root/docker/libtool-ltdl-2.4.2-20.el7.x86_64.rpm'])
+ok: [10.0.4.239] => (item=[u'/root/docker/libseccomp-2.2.1-1.el7.x86_64.rpm', u'/root/docker/libtool-ltdl-2.4.2-20.el7.x86_64.rpm'])
+
+TASK [intall Docker] ***********************************************************
+ok: [10.0.4.241] => (item=[u'/root/docker/docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm', u'/root/docker/docker-engine-1.12.0-1.el7.centos.x86_64.rpm'])
+ok: [10.0.4.239] => (item=[u'/root/docker/docker-engine-selinux-1.12.1-1.el7.centos.noarch.rpm', u'/root/docker/docker-engine-1.12.0-1.el7.centos.x86_64.rpm'])
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=5    changed=0    unreachable=0    failed=0   
+10.0.4.241                 : ok=5    changed=0    unreachable=0    failed=0   
+
+[centos@ansible-host ~]$ packet_write_wait: Connection to 10.0.4.238: Broken pipe
+^[[Bkimsy-iMac:~ kimsoyoun$ ssh centos@10.0.4.238
+centos@10.0.4.238's password: 
+Last login: Wed Aug 31 04:04:14 2016 from 10.0.1.199
+WARNING: Use by ACME Emplansible-playbook example-play.yml ^C
+[centos@ansible-host ~]$ vi example-openssl.yml
+[centos@ansible-host ~]$ ansible-playbook example-openssl.yml 
+Enter SSL Certificate Passphrase: secret
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [generate client key] *****************************************************
+^CProcess WorkerProcess-5:
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python2.7/site-packages/ansible/executor/process/worker.py", line 117, in run
+    self._rslt_q
+  File "/usr/lib/python2.7/site-packages/ansible/executor/task_executor.py", line 124, in run
+    res = self._execute()
+  File "/usr/lib/python2.7/site-packages/ansible/executor/task_executor.py", line 448, in _execute
+    result = self._handler.run(task_vars=variables)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/action/normal.py", line 33, in run
+    results = merge_hash(results, self._execute_module(tmp=tmp, task_vars=task_vars))
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/action/__init__.py", line 644, in _execute_module
+    res = self._low_level_execute_command(cmd, sudoable=sudoable, in_data=in_data)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/action/__init__.py", line 718, in _low_level_execute_command
+    rc, stdout, stderr = self._connection.exec_command(cmd, in_data=in_data, sudoable=sudoable)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/connection/ssh.py", line 595, in exec_command
+    return_tuple = self._exec_command(*args, **kwargs)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/connection/ssh.py", line 572, in _exec_command
+    (returncode, stdout, stderr) = self._run(cmd, in_data, sudoable=sudoable)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/connection/ssh.py", line 411, in _run
+    rfd, wfd, efd = select.select(rpipes, [], [], timeout)
+KeyboardInterrupt
+Process WorkerProcess-4:
+Traceback (most recent call last):
+  File "/usr/lib64/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python2.7/site-packages/ansible/executor/process/worker.py", line 117, in run
+    self._rslt_q
+  File "/usr/lib/python2.7/site-packages/ansible/executor/task_executor.py", line 124, in run
+    res = self._execute()
+  File "/usr/lib/python2.7/site-packages/ansible/executor/task_executor.py", line 448, in _execute
+    result = self._handler.run(task_vars=variables)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/action/normal.py", line 33, in run
+    results = merge_hash(results, self._execute_module(tmp=tmp, task_vars=task_vars))
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/action/__init__.py", line 644, in _execute_module
+    res = self._low_level_execute_command(cmd, sudoable=sudoable, in_data=in_data)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/action/__init__.py", line 718, in _low_level_execute_command
+    rc, stdout, stderr = self._connection.exec_command(cmd, in_data=in_data, sudoable=sudoable)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/connection/ssh.py", line 595, in exec_command
+    return_tuple = self._exec_command(*args, **kwargs)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/connection/ssh.py", line 572, in _exec_command
+    (returncode, stdout, stderr) = self._run(cmd, in_data, sudoable=sudoable)
+  File "/usr/lib/python2.7/site-packages/ansible/plugins/connection/ssh.py", line 411, in _run
+    rfd, wfd, efd = select.select(rpipes, [], [], timeout)
+KeyboardInterrupt
+ [ERROR]: User interrupted execution
+
+[centos@ansible-host ~]$ vi example-openssl.yml
+[centos@ansible-host ~]$ ansible-playbook example-openssl.yml 
+Enter SSL Certificate Passphrase: secret
+
+PLAY [targets] *****************************************************************
+
+TASK [setup] *******************************************************************
+ok: [10.0.4.241]
+ok: [10.0.4.239]
+
+TASK [generate client key] *****************************************************
+fatal: [10.0.4.239]: FAILED! => {"changed": false, "failed": true, "msg": "The pexpect python module is required"}
+fatal: [10.0.4.241]: FAILED! => {"changed": false, "failed": true, "msg": "The pexpect python module is required"}
+
+NO MORE HOSTS LEFT *************************************************************
+ [WARNING]: Could not create retry file 'example-openssl.retry'.         [Errno 2] No such file or directory: ''
+
+
+PLAY RECAP *********************************************************************
+10.0.4.239                 : ok=1    changed=0    unreachable=0    failed=1   
+10.0.4.241                 : ok=1    changed=0    unreachable=0    failed=1   
+
+[centos@ansible-host ~]$ vi example-openssl.yml
+[centos@ansible-host ~]$ 
