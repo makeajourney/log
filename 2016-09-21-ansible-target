@@ -1,0 +1,24 @@
+Last login: Wed Sep 21 16:24:31 on ttys002
+kimsy-iMac:~ kimsoyoun$ ssh centos@10.0.4.238
+centos@10.0.4.238's password: 
+Last login: Wed Sep 21 06:51:14 2016 from 10.0.1.199
+WARNING: Use by ACME Employees ONLY[centos@ansible-host ~]$ 
+[centos@ansible-host ~]$ watch -n 0.5 -d "ls -al /tmp"
+[centos@ansible-host ~]$ rm -rf /tmp/*.json
+[centos@ansible-host ~]$ watch -n 0.5 -d "ls -al /tmp"
+[centos@ansible-host ~]$ vi /tmp/
+.ICE-unix/                  10.0.4.111.json
+.Test-unix/                 10.0.4.112.json
+.X11-unix/                  10.0.4.239.json
+.XIM-unix/                  10.0.4.241.json
+.font-unix/                 get_yum_installed_list.yml
+[centos@ansible-host ~]$ vi /tmp/10.0.4.111.json 
+[centos@ansible-host ~]$ rm -rf /tmp/*.json
+[centos@ansible-host ~]$ watch -n 0.5 -d "ls -al /tmp"
+[centos@ansible-host ~]$ rm -rf /tmp/*.json
+[centos@ansible-host ~]$ watch -n 0.5 -d "ls -al /tmp"
+[centos@ansible-host ~]$ vi /tmp/10.0.4.111.json 
+[centos@ansible-host ~]$ 
+
+
+
